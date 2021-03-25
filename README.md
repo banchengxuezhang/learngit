@@ -301,4 +301,69 @@
     小结
         Git分支十分强大，在团队开发中应该充分应用。
         合并分支时，加上--no-ff参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并，而fast forward合并就看不出来曾经做过合并。
-        
+## 4.Bug分支
+    软件开发中，bug就像家常便饭一样。有了bug就需要修复，在Git中，由于分支是如此的强大，所以，每个bug都可以通过一个新的临时分支来修复，修复后，合并分支，然后将临时分支删除。
+    当你接到一个修复一个代号101的bug的任务时，很自然地，你想创建一个分支issue-101来修复它，但是，等等，当前正在dev上进行的工作还没有提交：
+        git status 查看当前状态
+    并不是你不想提交，而是工作只进行到一半，还没法提交，预计完成还需1天时间。但是，必须在两个小时内修复该bug，怎么办？
+    幸好，Git还提供了一个stash功能，可以把当前工作现场“储藏”起来，等以后恢复现场后继续工作：
+        git stash 暂存状态 回到上一个commit版本
+        git status
+    现在，用git status查看工作区，就是干净的（除非有没有被Git管理的文件），因此可以放心地创建分支来修复bug。
+    首先确定要在哪个分支上修复bug，假定需要在master分支上修复，就从master创建临时分支：
+        git switch master
+        git switch -c issue-101
+    现在修复bug，修改LICENSE.txt内容然后提交
+        git add .
+        git commit -m "在issue-101分支上修复bug"
+    切换回master分支并合并分支修复bug
+        git switch master
+        git merge --no-ff -m "合并issue-101分支,修复bug" issue-101
+    合并完成后 删除issue-101分支
+        git branch -d issue-101
+    太棒了，原计划两个小时的bug修复只花了5分钟！现在，是时候接着回到dev分支干活了！
+        git switch dev
+        git status
+    工作区是干净的，刚才的工作现场存到哪去了？用git stash list命令看看：
+        git stash list
+    工作现场还在，Git把stash内容存在某个地方了，但是需要恢复一下，有两个办法：
+    一是用git stash apply恢复，但是恢复后，stash内容并不删除，你需要用git stash drop来删除；
+    另一种方式是用git stash pop，恢复的同时把stash内容也删了：
+        git stash pop
+    再用git stash list查看，就看不到任何stash内容了：
+        git stash list
+    你可以多次stash，恢复的时候，先用git stash list查看，然后恢复指定的stash，用命令：
+        git stash apply stash@{0}
+    同样的bug，要在dev上修复，我们只需要把0dd39f4  在issue-101上修复bug 101分支这个提交所做的修改“复制”到dev分支。注意：我们只想复制4c805e2 fix bug 101这个提交所做的修改，并不是把整个master分支merge过来。
+    为了方便操作，Git专门提供了一个cherry-pick命令，让我们能复制一个特定的提交到当前分支：
+        git branch
+        git cherry-pick 0dd39f4
+    Git自动给dev分支做了一次提交，注意这次提交的commit是0dd39f4，它并不同于master的71850c1，因为这两个commit只是改动相同，但确实是两个不同的commit。用git cherry-pick，我们就不需要在dev分支上手动再把修bug的过程重复一遍。
+    有些聪明的童鞋会想了，既然可以在master分支上修复bug后，在dev分支上可以“重放”这个修复过程，那么直接在dev分支上修复bug，然后在master分支上“重放”行不行？当然可以，不过你仍然需要git stash命令保存现场，才能从dev分支切换到master分支。
+    小结
+        修复bug时，我们会通过创建新的bug分支进行修复，然后合并，最后删除；
+        当手头工作没有完成时，先把工作现场git stash一下，然后去修复bug，修复后，再git stash pop，回到工作现场；
+        在master分支上修复的bug，想要合并到当前dev分支，可以用git cherry-pick <commit>命令，把bug提交的修改“复制”到当前分支，避免重复劳动。
+## 5.Feature分支
+    软件开发中，总有无穷无尽的新的功能要不断添加进来。
+    添加一个新功能时，你肯定不希望因为一些实验性质的代码，把主分支搞乱了，所以，每添加一个新功能，最好新建一个feature分支，在上面开发，完成后，合并，最后，删除该feature分支。
+    现在，你终于接到了一个新任务：开发代号为Vulcan的新功能，该功能计划用于下一代星际飞船。
+    于是准备开发：
+        git switch -c feature-Vulcan
+    五分钟后开发完毕
+        git add README.md
+        git commit -m "新功能开发完毕"
+    切回dev 准备合并
+        git switch dev
+    一切顺利的话，feature分支和bug分支是类似的，合并，然后删除。
+    但是！
+    就在此时，接到上级命令，因经费不足，新功能必须取消！
+    虽然白干了，但是这个包含机密资料的分支还是必须就地销毁：
+        git branch -d feature-vulcan
+    销毁失败。Git友情提醒，feature-vulcan分支还没有被合并，如果删除，将丢失掉修改，如果要强行删除，需要使用大写的-D参数。。
+    现在我们强行删除
+         git branch -D feature-vulcan
+    小结
+    开发一个新feature，最好新建一个分支；
+    如果要丢弃一个没有被合并过的分支，可以通过git branch -D <name>强行删除。
+    
