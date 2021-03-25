@@ -48,7 +48,7 @@
     3.提交修改和提交新文件一样是两步
         1.git add xxx
         2.git commit -m "xxx"
-   小结
+    小结
         要随时掌握工作区的状态，使用git status命令。
 
         如果git status告诉你有文件被修改过，用git diff可以查看修改内容。 
@@ -81,17 +81,17 @@
         第一步是用git add把文件添加进去，实际上就是把文件修改添加到暂存区；
         第二步是用git commit提交更改，实际上就是把暂存区的所有内容提交到当前分支。
         因为我们创建Git版本库时，Git自动为我们创建了唯一一个master分支，所以，现在，git commit就是往master分支上提交更改。
-   你可以简单理解为，需要提交的文件修改通通放到暂存区，然后，一次性提交暂存区的所有修改。
-   实践出真知:
-    1.修改README.md文件
-    2.文件夹下新建LICENSE文本 内容随便写
-    3.使用git status 查看状态
-   Git非常清楚地告诉我们，README.md被修改了，而LICENSE还从来没有被添加过，所以它的状态是Untracked。
-   现在，使用两次命令git add，把README.md和LICENSE.txt都添加后，用git status再查看一下：
+    你可以简单理解为，需要提交的文件修改通通放到暂存区，然后，一次性提交暂存区的所有修改。
+    实践出真知:
+        1.修改README.md文件
+        2.文件夹下新建LICENSE文本 内容随便写
+        3.使用git status 查看状态
+        Git非常清楚地告诉我们，README.md被修改了，而LICENSE还从来没有被添加过，所以它的状态是Untracked。
+    现在，使用两次命令git add，把README.md和LICENSE.txt都添加后，用git status再查看一下：
                     new file:   LICENSE.txt
 	                modified:   README.md
-   所以，git add命令实际上就是把要提交的所有修改放到暂存区（Stage），然后，执行git commit就可以一次性把暂存区的所有修改提交到分支。
-   一旦提交后，如果你又没有对工作区做任何修改，那么工作区就是“干净”的：
+    所以，git add命令实际上就是把要提交的所有修改放到暂存区（Stage），然后，执行git commit就可以一次性把暂存区的所有修改提交到分支。
+    一旦提交后，如果你又没有对工作区做任何修改，那么工作区就是“干净”的：
         nothing to commit, working tree clean
 ## 6.管理修改
     现在，假定你已经完全掌握了暂存区的概念。下面，我们要讨论的就是，为什么Git比其他版本控制系统设计得优秀，因为Git跟踪并管理的是修改，而非文件。
@@ -125,16 +125,16 @@
         touch test.txt
         git add test.txt
         git commit -m "提交新文件test"
-   一般情况下，你通常直接在文件管理器中把没用的文件删了，或者用rm命令删了：
+    一般情况下，你通常直接在文件管理器中把没用的文件删了，或者用rm命令删了：
         rm test.txt
-   这个时候，Git知道你删除了文件，因此，工作区和版本库就不一致了，git status命令会立刻告诉你哪些文件被删除了：
+    这个时候，Git知道你删除了文件，因此，工作区和版本库就不一致了，git status命令会立刻告诉你哪些文件被删除了：
         git status
-   1.现在你有两个选择，一是确实要从版本库中删除该文件，那就用命令git rm删掉，并且git commit：
-        git rm test.txt
-        git commit -m "xxx"
-   2.另一种情况是删错了，因为版本库里还有呢，所以可以很轻松地把误删的文件恢复到最新版本：
+        1.现在你有两个选择，一是确实要从版本库中删除该文件，那就用命令git rm删掉，并且git commit：
+            git rm test.txt
+            git commit -m "xxx"
+        2.另一种情况是删错了，因为版本库里还有呢，所以可以很轻松地把误删的文件恢复到最新版本：
         git checkout --test.txt
-   小结
+    小结
         命令git rm用于删除一个文件。如果一个文件已经被提交到版本库，那么你永远不用担心误删，但是要小心，你只能恢复文件到最新版本，你会丢失最近一次提交后你修改的内容。
 ## 9.添加远程库-获取ssh秘钥
     本章开始介绍Git的杀手级功能之一：远程仓库。
@@ -168,9 +168,9 @@
         在Repository name填入learngit，其他保持默认设置，点击“Create repository”按钮，就成功地创建了一个新的Git仓库：
         目前，在GitHub上的这个learngit仓库还是空的，GitHub告诉我们，可以从这个仓库克隆出新的仓库，也可以把一个已有的本地仓库与之关联，然后，把本地仓库的内容推送到GitHub仓库。
 
-        现在，我们根据GitHub的提示，在本地的learngit仓库下运行命
+        现在，我们根据GitHub的提示，在本地的learngit仓库下运行命令
 ## 11.绑定并推送到远程仓库
-        git remote add origin git@github.com:banchengxuezhang/learngit.git令：
+    git remote add origin git@github.com:banchengxuezhang/learngit.git
     请千万注意，把上面的banchengxuezhang替换成你自己的GitHub账户名，否则，你在本地关联的就是我的远程库，关联没有问题，但是你以后推送是推不上去的，因为你的SSH Key公钥不在我的账户列表中。
 
     添加后，远程库的名字就是origin，这是Git默认的叫法，也可以改成别的，但是origin这个名字一看就知道是远程库。
@@ -187,23 +187,23 @@
         git push origin master
      把本地master分支的最新修改推送至GitHub，现在，你就拥有了真正的分布式版本库！
      SSH警告
-当你第一次使用Git的clone或者push命令连接GitHub时，会得到一个警告：
+    当你第一次使用Git的clone或者push命令连接GitHub时，会得到一个警告：
 
-这是因为Git使用SSH连接，而SSH连接在第一次验证GitHub服务器的Key时，需要你确认GitHub的Key的指纹信息是否真的来自GitHub的服务器，输入yes回车即可。
-Git会输出一个警告，告诉你已经把GitHub的Key添加到本机的一个信任列表里了：
-Warning: Permanently added 'github.com,13.250.177.223' (RSA) to the list of known hosts.
+    这是因为Git使用SSH连接，而SSH连接在第一次验证GitHub服务器的Key时，需要你确认GitHub的Key的指纹信息是否真的来自GitHub的服务器，输入yes回车即可。
+    Git会输出一个警告，告诉你已经把GitHub的Key添加到本机的一个信任列表里了：
+    Warning: Permanently added 'github.com,13.250.177.223' (RSA) to the list of known hosts.
 ## 12.解绑远程仓库(删除和远程仓库的关联)
     如果添加的时候地址写错了，或者就是想删除远程库，可以用git remote rm <name>命令。使用前，建议先用git remote -v查看远程库信息：
     然后，根据名字删除，比如删除origin：
     git remote rm origin
     此处的“删除”其实是解除了本地和远程的绑定关系，并不是物理上删除了远程库。远程库本身并没有任何改动。要真正删除远程库，需要登录到GitHub，在后台页面找到删除按钮再删除。
-小结
-    要关联一个远程库，使用命令
-        git remote add origin git@server-name:path/repo-name.git；
-    关联一个远程库时必须给远程库指定一个名字，origin是默认习惯命名；
-    关联后，使用命令
-        git push -u origin master
-    第一次推送master分支的所有内容；
-    此后，每次本地提交后，只要有必要，就可以使用命令
-        git push origin master推送最新修改；
-    分布式版本系统的最大好处之一是在本地工作完全不需要考虑远程库的存在，也就是有没有联网都可以正常工作，而SVN在没有联网的时候是拒绝干活的！当有网络的时候，再把本地提交推送一下就完成了同步，真是太方便了！
+    小结
+        要关联一个远程库，使用命令
+            git remote add origin git@server-name:path/repo-name.git；
+        关联一个远程库时必须给远程库指定一个名字，origin是默认习惯命名；
+        关联后，使用命令
+            git push -u origin master
+        第一次推送master分支的所有内容；
+        此后，每次本地提交后，只要有必要，就可以使用命令
+            git push origin master推送最新修改；
+        分布式版本系统的最大好处之一是在本地工作完全不需要考虑远程库的存在，也就是有没有联网都可以正常工作，而SVN在没有联网的时候是拒绝干活的！当有网络的时候，再把本地提交推送一下就完成了同步，真是太方便了！
