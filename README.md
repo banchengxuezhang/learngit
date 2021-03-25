@@ -44,6 +44,9 @@
     显示结果中,HEAD表示当前版本 上一个版本就是HEAD^ 上上个版本就是HEAD^^ 再往前写成HEAD~100
     版本回退命令:
         git reset --hard HEAD^ 回退到上一个版本
+    版本回退,内容还原了,使用git log 已经看不见被退掉的版本了
+    这个时候 翻记录找到要回退版本的那个id 如 c7cc4cbxxx
+    使用 git reset --hard c7cc4cbxxx 回到指定的版本
 
 
 
