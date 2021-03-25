@@ -366,4 +366,33 @@
     小结
     开发一个新feature，最好新建一个分支；
     如果要丢弃一个没有被合并过的分支，可以通过git branch -D <name>强行删除。
-    
+## 6.多人协作
+    当你从远程仓库克隆时，实际上Git自动把本地的master分支和远程的master分支对应起来了，并且，远程仓库的默认名称是origin。
+    要查看远程库的信息，用git remote：
+        git remote
+    或者，用git remote -v显示更详细的信息
+        git remote -v
+    上面显示了可以抓取和推送的origin的地址。如果没有推送权限，就看不到push的地址。
+    推送分支
+    推送分支，就是把该分支上的所有本地提交推送到远程库。推送时，要指定本地分支，这样，Git就会把该分支推送到远程库对应的远程分支上：
+    git push originXXX master
+    如果要推送其他分支，比如dev，就改成：
+    git push originXXX dev
+    但是，并不是一定要把本地分支往远程推送，那么，哪些分支需要推送，哪些不需要呢？
+        master分支是主分支，因此要时刻与远程同步；
+        dev分支是开发分支，团队所有成员都需要在上面工作，所以也需要与远程同步；
+        bug分支只用于在本地修复bug，就没必要推到远程了，除非老板要看看你每周到底修复了几个bug；
+        feature分支是否推到远程，取决于你是否和你的小伙伴合作在上面开发。
+    总之，就是在Git中，分支完全可以在本地自己藏着玩，是否推送，视你的心情而定！
+    抓取分支
+    多人协作时，大家都会往master和dev分支上推送各自的修改。
+    现在，模拟一个你的小伙伴，可以在另一台电脑（注意要把SSH Key添加到GitHub）或者同一台电脑的另一个目录下克隆：
+    当你的小伙伴从远程库clone时，默认情况下，你的小伙伴只能看到本地的master分支。不信可以用git branch命令看看：
+      小伙伴:  
+        git clone git@github.com:banchengxuezhang/learngit.git
+        git branch
+    现在，你的小伙伴要在dev分支上开发，就必须创建远程origin的dev分支到本地，于是他用这个命令创建本地dev分支：
+        小伙伴:
+            git checkout -b dev origin/dev
+        现在，他就可以在dev上继续修改，然后，时不时地把dev分支push到远程：
+        
