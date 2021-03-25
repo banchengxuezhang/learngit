@@ -28,9 +28,15 @@
     -m "xxx" xxx写的是本次提交的一些说明,这样方便查看改动记录
      git commit命令执行成功后会告诉你，1 file changed：1个文件被改动（我们新添加的README.md文件）；2 insertions：插入了x行内容（README.md有x行内容）。
 ## 3.时光机穿梭
-    首先我们进行工作,对README.md文件进行修改,通过git-status 查看修改状态.
+    1.首先我们进行工作,对README.md文件进行修改,通过git status 查看修改状态.
     git status 可以看出xxx文件被修改过了,但是没有提交的修改
-    可以通过git diff 看看具体修改了什么内容
+    2.如果要看具体修改的内容,可以通过git diff 看看具体修改了什么内容,diff即不同,通过这个命令我们可以看出
+    -xxx 删了什么
+    +xxx添加了什么内容
+    3.提交修改和提交新文件一样是两步
+        1.git add xxx
+        2.git commit -m "xxx"
+    
 
 
 
