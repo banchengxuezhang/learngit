@@ -137,3 +137,74 @@
         git checkout --test.txt
    小结
         命令git rm用于删除一个文件。如果一个文件已经被提交到版本库，那么你永远不用担心误删，但是要小心，你只能恢复文件到最新版本，你会丢失最近一次提交后你修改的内容。
+## 9.添加远程库-获取ssh秘钥
+    本章开始介绍Git的杀手级功能之一：远程仓库。
+    完全可以自己搭建一台运行Git的服务器，不过现阶段，为了学Git先搭个服务器绝对是小题大作。好在这个世界上有个叫GitHub的神奇的网站，从名字就可以看出，这个网站就是提供Git仓库托管服务的，所以，只要注册一个GitHub账号，就可以免费获得Git远程仓库。
+
+    在继续阅读后续内容前，请自行注册GitHub账号。由于你的本地Git仓库和GitHub仓库之间的传输是通过SSH加密的，所以，需要一点设置：
+        第1步：创建SSH Key。在用户主目录下，看看有没有.ssh目录，如果有，再看看这个目录下有没有id_rsa和id_rsa.pub这两个文件，如果已经有了，可直接跳到下一步。如果没有，打开Shell（Windows下打开Git Bash），
+
+        创建SSH Key：
+        ssh-keygen -t rsa -C "xxx@example.com"
+
+        你需要把邮件地址换成你自己的邮件地址，然后一路回车，使用默认值即可，由于这个Key也不是用于军事目的，所以也无需设置密码。     
+        如果一切顺利的话，可以在用户主目录里找到.ssh目录，里面有id_rsa和id_rsa.pub两个文件，这两个就是SSH Key的秘钥对，id_rsa是私钥，不能泄露出去，id_rsa.pub是公钥，可以放心地告诉任何人。
+        第2步：登陆GitHub，打开“Account settings”，“SSH Keys”页面：
+        然后，点“Add SSH Key”，填上任意Title，在Key文本框里粘贴id_rsa.pub文件的内容：
+        点“Add Key”，你就应该看到已经添加的Key：
+        为什么GitHub需要SSH Key呢？因为GitHub需要识别出你推送的提交确实是你推送的，而不是别人冒充的，而Git支持SSH协议，所以，GitHub只要知道了你的公钥，就可以确认只有你自己才能推送。
+
+    当然，GitHub允许你添加多个Key。假定你有若干电脑，你一会儿在公司提交，一会儿在家里提交，只要把每台电脑的Key都添加到GitHub，就可以在每台电脑上往GitHub推送了。
+
+    最后友情提示，在GitHub上免费托管的Git仓库，任何人都可以看到喔（但只有你自己才能改）。所以，不要把敏感信息放进去。
+
+    如果你不想让别人看到Git库，有两个办法，一个是交点保护费，让GitHub把公开的仓库变成私有的，这样别人就看不见了（不可读更不可写）。另一个办法是自己动手，搭一个Git服务器，因为是你自己的Git服务器，所以别人也是看不见的。这个方法我们后面会讲到的，相当简单，公司内部开发必备。
+
+    确保你拥有一个GitHub账号后，我们就即将开始远程仓库的学习。
+    小结
+        “有了远程仓库，妈妈再也不用担心我的硬盘了。”——Git点读机
+## 10.添加远程仓库-创建远程目录
+    现在的情景是，你已经在本地创建了一个Git仓库后，又想在GitHub创建一个Git仓库，并且让这两个仓库进行远程同步，这样，GitHub上的仓库既可以作为备份，又可以让其他人通过该仓库来协作，真是一举多得。
+        首先，登陆GitHub，然后，在右上角找到“Create a new repo”按钮，创建一个新的仓库：
+        在Repository name填入learngit，其他保持默认设置，点击“Create repository”按钮，就成功地创建了一个新的Git仓库：
+        目前，在GitHub上的这个learngit仓库还是空的，GitHub告诉我们，可以从这个仓库克隆出新的仓库，也可以把一个已有的本地仓库与之关联，然后，把本地仓库的内容推送到GitHub仓库。
+
+        现在，我们根据GitHub的提示，在本地的learngit仓库下运行命
+## 11.绑定并推送到远程仓库
+        git remote add origin git@github.com:banchengxuezhang/learngit.git令：
+    请千万注意，把上面的banchengxuezhang替换成你自己的GitHub账户名，否则，你在本地关联的就是我的远程库，关联没有问题，但是你以后推送是推不上去的，因为你的SSH Key公钥不在我的账户列表中。
+
+    添加后，远程库的名字就是origin，这是Git默认的叫法，也可以改成别的，但是origin这个名字一看就知道是远程库。
+
+    下一步，就可以把本地库的所有内容推送到远程库上：
+        git push -u origin master
+    
+    把本地库的内容推送到远程，用git push命令，实际上是把当前分支master推送到远程。
+
+    由于远程库是空的，我们第一次推送master分支时，加上了-u参数，Git不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令。
+    推送成功后，可以立刻在GitHub页面中看到远程库的内容已经和本地一模一样：
+
+        从现在起，只要本地作了提交，就可以通过命令：
+        git push origin master
+     把本地master分支的最新修改推送至GitHub，现在，你就拥有了真正的分布式版本库！
+     SSH警告
+当你第一次使用Git的clone或者push命令连接GitHub时，会得到一个警告：
+
+这是因为Git使用SSH连接，而SSH连接在第一次验证GitHub服务器的Key时，需要你确认GitHub的Key的指纹信息是否真的来自GitHub的服务器，输入yes回车即可。
+Git会输出一个警告，告诉你已经把GitHub的Key添加到本机的一个信任列表里了：
+Warning: Permanently added 'github.com,13.250.177.223' (RSA) to the list of known hosts.
+## 12.解绑远程仓库(删除和远程仓库的关联)
+    如果添加的时候地址写错了，或者就是想删除远程库，可以用git remote rm <name>命令。使用前，建议先用git remote -v查看远程库信息：
+    然后，根据名字删除，比如删除origin：
+    git remote rm origin
+    此处的“删除”其实是解除了本地和远程的绑定关系，并不是物理上删除了远程库。远程库本身并没有任何改动。要真正删除远程库，需要登录到GitHub，在后台页面找到删除按钮再删除。
+小结
+    要关联一个远程库，使用命令
+        git remote add origin git@server-name:path/repo-name.git；
+    关联一个远程库时必须给远程库指定一个名字，origin是默认习惯命名；
+    关联后，使用命令
+        git push -u origin master
+    第一次推送master分支的所有内容；
+    此后，每次本地提交后，只要有必要，就可以使用命令
+        git push origin master推送最新修改；
+    分布式版本系统的最大好处之一是在本地工作完全不需要考虑远程库的存在，也就是有没有联网都可以正常工作，而SVN在没有联网的时候是拒绝干活的！当有网络的时候，再把本地提交推送一下就完成了同步，真是太方便了！
