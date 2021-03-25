@@ -192,14 +192,14 @@
     这是因为Git使用SSH连接，而SSH连接在第一次验证GitHub服务器的Key时，需要你确认GitHub的Key的指纹信息是否真的来自GitHub的服务器，输入yes回车即可。
     Git会输出一个警告，告诉你已经把GitHub的Key添加到本机的一个信任列表里了：
     Warning: Permanently added 'github.com,13.250.177.223' (RSA) to the list of known hosts.
-## 12.解绑远程仓库(删除和远程仓库的关联)
+## 12.解绑远程仓库(删除和远程仓库的关联)与总结
     如果添加的时候地址写错了，或者就是想删除远程库，可以用git remote rm <name>命令。使用前，建议先用git remote -v查看远程库信息：
     然后，根据名字删除，比如删除origin：
     git remote rm origin
     此处的“删除”其实是解除了本地和远程的绑定关系，并不是物理上删除了远程库。远程库本身并没有任何改动。要真正删除远程库，需要登录到GitHub，在后台页面找到删除按钮再删除。
     小结
         要关联一个远程库，使用命令
-            git remote add origin git@server-name:path/repo-name.git；
+            git remote add origin git@server-name:path/repo-name.git；如:git remote add origin git@github.com:banchengxuezhang/learngit.git
         关联一个远程库时必须给远程库指定一个名字，origin是默认习惯命名；
         关联后，使用命令
             git push -u origin master
@@ -207,3 +207,14 @@
         此后，每次本地提交后，只要有必要，就可以使用命令
             git push origin master推送最新修改；
         分布式版本系统的最大好处之一是在本地工作完全不需要考虑远程库的存在，也就是有没有联网都可以正常工作，而SVN在没有联网的时候是拒绝干活的！当有网络的时候，再把本地提交推送一下就完成了同步，真是太方便了！
+## 13.从远程仓库克隆
+    上次我们讲了先有本地库，后有远程库的时候，如何关联远程库。
+    现在，假设我们从零开发，那么最好的方式是先创建远程库，然后，从远程库克隆。
+    首先，登陆GitHub，创建一个新的仓库，名字叫gitskills：
+    我们勾选Initialize this repository with a README，这样GitHub会自动为我们创建一个README.md文件。创建完毕后，可以看到README.md文件：
+    现在，远程库已经准备好了，下一步是用命令git clone克隆一个本地库：
+        git clone git@github.com:banchengxuezhang/gitskills.git
+    你也许还注意到，GitHub给出的地址不止一个，还可以用https://github.com/michaelliao/gitskills.git这样的地址。实际上，Git支持多种协议，默认的git://使用ssh，但也可以使用https等其他协议。
+    小结
+        要克隆一个仓库，首先必须知道仓库的地址，然后使用git clone命令克隆。
+        Git支持多种协议，包括https，但ssh协议速度最快。
