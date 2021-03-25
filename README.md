@@ -231,4 +231,10 @@
         git checkout dev
     然后，用git branch命令查看当前分支：
     git branch命令会列出所有分支，当前分支前面会标一个*号。
-    然后，我们就可以在dev分支上正常提交，比如对README.md做个修改，加上一行：
+    然后，我们就可以在dev分支上正常提交，比如对README.md做个修改，加上一行,并且提交
+        git add README.md 
+        git commit -m "xxx"
+    现在，dev分支的工作完成，我们就可以切换回master分支：
+        git checkout master
+
+    
